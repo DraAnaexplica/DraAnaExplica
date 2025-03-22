@@ -7,7 +7,7 @@ load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=API_KEY)
 
-model = genai.GenerativeModel("models/gemini-pro")  # Corrigido aqui ✅
+model = genai.GenerativeModel("gemini-pro")  # <- Agora sim está certo ✅
 
 def chamar_gemini(pergunta: str) -> str:
     prompt = (
@@ -23,6 +23,7 @@ def chamar_gemini(pergunta: str) -> str:
     except Exception as e:
         print(f"[ERRO Gemini]: {e}")
         return "Desculpe, houve um erro ao tentar responder. Tente novamente em instantes."
+
 
 
 
