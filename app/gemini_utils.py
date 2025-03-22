@@ -1,19 +1,31 @@
-import google.generativeai as genai
 import os
+from dotenv import load_dotenv
+from openai import OpenAI
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+load_dotenv()
 
-def chamar_gemini(mensagem):
+# Carregar chave da API do Gemini
+API_KEY = os.getenv("GEMINI_API_KEY")
+
+# Criação do cliente Gemini
+client = OpenAI(api_key=API_KEY)
+
+def chamar_gemini(pergunta: str) -> str:
+    prompt = (
+        "Você é a Dra. Ana, uma médica experiente, gentil e atenciosa, especializada em saúde feminina "
+        "de mulheres com idade entre 40 e 50 anos. Responda de forma clara, empática e baseada em evidências "
+        "científicas. Mantenha sempre o contexto da conversa. "
+        f"\n\nPergunta da paciente:\n{pergunta}"
+    )
+
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        prompt = (
-            "Você é a Dra. Ana, especialista em saúde feminina para mulheres de 40 a 50 anos. "
-            "Seja empática, educada e humanizada em suas respostas. Use linguagem clara e acessível. "
-            "Evite termos técnicos. Se a pergunta não for relacionada à saúde feminina, oriente a paciente gentilmente.\n\n"
-            f"Pergunta: {mensagem}"
+        resposta = client.chat.completions.create(
+            model="gpt-3.5-turbo",  # ou gemini-pro se estiver usando VertexAI
+            messages=[{"role": "user", "content": prompt}]
         )
-        response = model.generate_content(prompt)
-        return response.text or "Desculpe, não consegui entender. Poderia reformular?"
+        return resposta.choices[0].message.content.strip()
+
     except Exception as e:
-        print("[Erro Gemini]", e)
-        return "Desculpe, tive um problema para responder agora. Pode tentar mais tarde?"
+        print(f"[ERRO Gemini]: {e}")
+        return "Desculpe, houve um problema ao tentar responder sua pergunta. Tente novamente em instantes."
+
