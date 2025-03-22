@@ -1,13 +1,17 @@
+# app/gemini_utils.py
+
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 
 load_dotenv()
 
+# Carregar chave da API do Gemini
 API_KEY = os.getenv("GEMINI_API_KEY")
-genai.configure(api_key=API_KEY)
 
-model = genai.GenerativeModel("gemini-pro")  # <- Agora sim está certo ✅
+# Configurar cliente Gemini
+genai.configure(api_key=API_KEY)
+model = genai.GenerativeModel("gemini-pro")
 
 def chamar_gemini(pergunta: str) -> str:
     prompt = (
