@@ -1,11 +1,10 @@
 from flask import Flask
-from dotenv import load_dotenv
-import os
 from app.routes import webhook
 
-# Carregar variáveis do .env
-load_dotenv()
+def create_app():
+    app = Flask(__name__)
+    app.register_blueprint(webhook)
+    return app
 
-app = Flask(__name__)
-app.register_blueprint(webhook)
+app = create_app()
 
