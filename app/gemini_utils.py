@@ -11,7 +11,7 @@ API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Configurar cliente Gemini
 genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel("models/gemini-1.5-pro-latest")
 
 def chamar_gemini(pergunta: str) -> str:
     prompt = (
