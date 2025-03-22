@@ -6,7 +6,8 @@ load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-pro")
+
+model = genai.GenerativeModel("models/gemini-pro")  # Corrigido aqui ✅
 
 def chamar_gemini(pergunta: str) -> str:
     prompt = (
@@ -17,15 +18,12 @@ def chamar_gemini(pergunta: str) -> str:
     )
 
     try:
-        print(f"[DEBUG Gemini] API_KEY está carregada? {'SIM' if API_KEY else 'NÃO'}")
-        print(f"[DEBUG Gemini] Prompt enviado:\n{prompt}")
-
         response = model.generate_content(prompt)
         return response.text.strip()
-
     except Exception as e:
         print(f"[ERRO Gemini]: {e}")
         return "Desculpe, houve um erro ao tentar responder. Tente novamente em instantes."
+
 
 
 
